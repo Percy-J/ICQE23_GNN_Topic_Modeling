@@ -1,0 +1,49 @@
+---
+title: "ENA_analysis"
+output: html_document
+date: "2023-04-18"
+---
+
+```{r}
+library(rENA)
+library(dplyr)
+```
+
+```{r}
+input_data = read.csv("coded_dataset.csv")
+```
+
+```{r}
+set = ena(
+  data = input_data,
+  units = c("PlayerID","GroupID", "Condition"),
+  conversation = c("Condition"),
+  codes = c('Topic_0',
+            'Topic_1',
+            'Topic_2',
+            'Topic_3',
+            'Topic_4',
+            'Topic_5',
+            'Topic_6'),
+  window.size.back = 7, 
+  print.plots = TRUE,
+  groupVar = "Condition",
+  groups = c("Desktop", "VR"),
+  networkMultiplier = 8
+)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

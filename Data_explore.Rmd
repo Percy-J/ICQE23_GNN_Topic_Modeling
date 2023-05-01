@@ -1,0 +1,92 @@
+---
+title: "Data_explore"
+output: html_document
+date: "2023-03-26"
+---
+
+```{r}
+vr_dataset = read.csv("vr_desktop_coded_3.csv")
+```
+
+```{r}
+unique(vr_dataset[, "GroupID"])
+```
+
+```{r}
+vr_dataset = vr_dataset[, c("PlayerID", 
+                      "GroupID", 
+                      "Condition",
+                      "All_Content", 
+                      "information",
+                      "grounds",
+                      "claim",
+                      "organization",
+                      "query",
+                      "social",
+                      "strategy")]
+```
+
+
+```{r}
+write.csv(vr_dataset, "input_data.csv", row.names = FALSE)
+```
+
+```{r}
+word2vec = read.csv("word2vec.csv")
+```
+
+```{r}
+library(rENA)
+library(dplyr)
+```
+
+```{r}
+set = ena(
+  data = vr_dataset,
+  units = c("PlayerID", "GroupID", "Condition"),
+  conversation = c("GroupID","Condition"),
+  codes = c('information',
+            'grounds',
+            'claim',
+            'organization',
+            'query',
+            'social',
+            'strategy'),
+  print.plots = TRUE,
+  groupVar = "Condition"
+)
+```
+
+
+```{r}
+### Subset rotated points for the first condition
+first.game.points = as.matrix(set$points$Condition$Desktop)
+
+### Subset rotated points for the second condition
+second.game.points = as.matrix(set$points$Condition$VR)
+
+plot = ena.plot(set, scale.to = "points", title = "Groups of Units")  %>%
+       ena.plot.points(points = first.game.points, colors = c("blue"))  %>%
+       ena.plot.points(points = second.game.points, colors = c("red"))
+plot$plot
+```
+
+
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
